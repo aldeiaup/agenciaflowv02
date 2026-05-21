@@ -16,7 +16,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 function getPexelsApiKey() {
-  // 1. Tenta config.js
+  // 1. Tenta config.js (atualizado via /api/config em produção)
   if (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.pexelsApiKey) {
     return APP_CONFIG.pexelsApiKey;
   }
@@ -32,6 +32,14 @@ function getPexelsApiKey() {
   // 4. Fallback vazio — a API retornará erro controlado
   console.warn('[Pexels] Nenhuma API key configurada. Configure em src/config.js ou localStorage.');
   return '';
+}
+
+// Escuta atualizações de config vindo do /api/config (Vercel)
+if (typeof window !== 'undefined') {
+  window.addEventListener('appconfig:ready', () => {
+    // Limpa cache para forçar nova busca com a chave correta
+    _imageCache = null;
+  });
 }
 
 const PEXELS_BASE = 'https://api.pexels.com/v1';
