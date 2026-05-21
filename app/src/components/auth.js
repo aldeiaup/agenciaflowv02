@@ -102,7 +102,7 @@ function checkPwd(v) {
   // Se houver container de erros de senha, atualiza
   const errBox = document.getElementById('pwd-errors');
   if (errBox) {
-    errBox.innerHTML = result.errors.map(e => `<div style="font-size:11px;color:var(--text3)">• ${e}</div>`).join('');
+    errBox.innerHTML = result.errors.map(e => `<div style="font-size:11px;color:var(--text3)">• ${sanitize(e)}</div>`).join('');
   }
 }
 

@@ -2,47 +2,12 @@
 //   AgencyFlow — Pexels Background Engine
 //   src/utils/pexels.js
 //
-//   Busca imagens de fundo da Pexels API
-//   para compor o layout de forma dinâmica.
+//   SEGURANÇA: A chave de API NUNCA está no frontend.
+//   As requisições passam pelo proxy server-side
+//   (/api/pexels-proxy) que adiciona a chave.
 // ═══════════════════════════════════════
 
-// ═══════════════════════════════════════════════════════════════
-//   SEGURANÇA: A chave de API NÃO deve ficar hardcoded no frontend.
-//   Configure via:
-//     1. src/config.js  (dev local — não commitar)
-//     2. window.__APP_CONFIG__ (injetado em produção)
-//     3. localStorage.setItem('pexels_api_key', 'sua-chave')
-//   Em produção, use um backend proxy para não expor a chave.
-// ═══════════════════════════════════════════════════════════════
-
-function getPexelsApiKey() {
-  // 1. Tenta config.js (atualizado via /api/config em produção)
-  if (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.pexelsApiKey) {
-    return APP_CONFIG.pexelsApiKey;
-  }
-  // 2. Tenta window.__APP_CONFIG__
-  if (typeof window !== 'undefined' && window.__APP_CONFIG__ && window.__APP_CONFIG__.pexelsApiKey) {
-    return window.__APP_CONFIG__.pexelsApiKey;
-  }
-  // 3. Tenta localStorage (dev)
-  try {
-    const stored = localStorage.getItem('pexels_api_key');
-    if (stored) return stored;
-  } catch { /* silent */ }
-  // 4. Fallback vazio — a API retornará erro controlado
-  console.warn('[Pexels] Nenhuma API key configurada. Configure em src/config.js ou localStorage.');
-  return '';
-}
-
-// Escuta atualizações de config vindo do /api/config (Vercel)
-if (typeof window !== 'undefined') {
-  window.addEventListener('appconfig:ready', () => {
-    // Limpa cache para forçar nova busca com a chave correta
-    _imageCache = null;
-  });
-}
-
-const PEXELS_BASE = 'https://api.pexels.com/v1';
+const PEXELS_PROXY = '/api/pexels-proxy';
 
 // ── Cache local para evitar requests repetidos ──
 let _imageCache = null;
@@ -62,10 +27,10 @@ const SEARCH_QUERIES = [
 ];
 
 /**
- * Busca imagens de fundo da Pexels API.
+ * Busca imagens de fundo via proxy server-side.
  * @param {string} query - Termo de busca (opcional)
  * @param {number} perPage - Quantidade de imagens (default 15)
- * @returns {Promise<string[]>} Array de URLs de imagens
+ * @returns {Promise<Object>} Objeto com array de fotos
  */
 async function fetchPexelsBackgrounds(query = null, perPage = 15) {
   const now = Date.now();
@@ -79,20 +44,12 @@ async function fetchPexelsBackgrounds(query = null, perPage = 15) {
   const orientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
 
   try {
-    const apiKey = getPexelsApiKey();
-    if (!apiKey) {
-      console.warn('[Pexels] API key não configurada — pulando busca de imagens.');
-      return _imageCache || { photos: [] };
+    const url = `${PEXELS_PROXY}?query=${encodeURIComponent(searchTerm)}&per_page=${perPage}&orientation=${orientation}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Proxy error: ${response.status}`);
     }
-
-    const url = `${PEXELS_BASE}/search?query=${encodeURIComponent(searchTerm)}&per_page=${perPage}&orientation=${orientation}`;
-    const response = await fetch(url, {
-      headers: {
-        'Authorization': apiKey,
-      },
-    });
-
-    if (!response.ok) throw new Error(`Pexels API error: ${response.status}`);
 
     const data = await response.json();
     const photos = data.photos || [];

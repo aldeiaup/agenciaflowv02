@@ -7,24 +7,74 @@
 //   Supabase Dashboard → Settings → API
 // ═══════════════════════════════════════════════════════════════
 
-// ── Credenciais (seguro expor a anon key no frontend) ──
-const SUPABASE_URL     = 'https://SEU_PROJECT_ID.supabase.co';
-const SUPABASE_ANON_KEY = 'SUA_ANON_KEY_AQUI';
+// ── Carrega credenciais do APP_CONFIG (config.js) ──
+// O config.js faz fetch de /api/config em produção e popula APP_CONFIG.
+// Fallback para placeholders apenas em dev local.
+function getSupabaseUrl() {
+  return (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.supabaseUrl)
+    ? APP_CONFIG.supabaseUrl
+    : 'https://SEU_PROJECT_ID.supabase.co';
+}
+
+function getSupabaseAnonKey() {
+  return (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.supabaseAnonKey)
+    ? APP_CONFIG.supabaseAnonKey
+    : 'SUA_ANON_KEY_AQUI';
+}
+
+// ── Constantes globais para compatibilidade com auth.js ──
+// auth.js usa SUPABASE_URL e SUPABASE_ANON_KEY para verificar
+// se o Supabase está configurado antes de tentar login remoto.
+const SUPABASE_URL     = getSupabaseUrl();
+const SUPABASE_ANON_KEY = getSupabaseAnonKey();
 
 // ── Inicializa cliente Supabase (via CDN) ──
 // O script do SDK é carregado no <head> do HTML antes deste arquivo.
-supabase = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: {
-    autoRefreshToken:    true,
-    persistSession:      true,       // usa localStorage automaticamente
-    detectSessionInUrl:  true,       // captura tokens de confirmação de email
-    storage:             window.localStorage,
-  }
-});
+// Usa funções getter para capturar valores atualizados via /api/config
+let _supabaseInstance = null;
 
-if (!supabase) {
-  console.error('[AgencyFlow] Supabase SDK não carregado. Verifique o script no <head>.');
+function getSupabaseClient() {
+  if (_supabaseInstance) return _supabaseInstance;
+
+  const url = getSupabaseUrl();
+  const key = getSupabaseAnonKey();
+
+  if (!url.includes('SEU_PROJECT_ID') && !key.includes('SUA_ANON_KEY') && window.supabase) {
+    _supabaseInstance = window.supabase.createClient(url, key, {
+      auth: {
+        autoRefreshToken:    true,
+        persistSession:      true,
+        detectSessionInUrl:  true,
+        storage:             window.localStorage,
+      }
+    });
+  }
+  return _supabaseInstance;
 }
+
+// Inicialização sob demanda: cria o cliente na primeira chamada
+// Isso permite que o APP_CONFIG seja populado pelo /api/config antes
+function initSupabase() {
+  const client = getSupabaseClient();
+  if (!client) {
+    console.warn('[AgencyFlow] Supabase não configurado. Usando dados locais (seed).');
+  }
+  return client;
+}
+
+// Atualiza referência global `supabase` usada pelo resto do módulo
+let supabase = null;
+
+// Escuta evento de config carregado para reinicializar
+if (typeof window !== 'undefined') {
+  window.addEventListener('appconfig:ready', () => {
+    _supabaseInstance = null; // força recriação do cliente
+    supabase = initSupabase();
+  });
+}
+
+// Tenta inicializar imediatamente (caso APP_CONFIG já esteja populado)
+supabase = initSupabase();
 
 // ═══════════════════════════════════════════════════════════════
 //   AUTH
