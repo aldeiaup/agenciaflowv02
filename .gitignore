@@ -1,0 +1,33 @@
+node_modules/
+.env
+.mcp.json
+*.tmp
+squads/*/state.json
+squads/*/state.json.tmp
+squads/*/output/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Config
+app/config.js
+app/src/config.js
+
+# Test output
+app/tests/coverage/

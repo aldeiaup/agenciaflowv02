@@ -1,0 +1,66 @@
+squad:
+  code: seguranca-auditor
+  setor: desenvolvimento
+  grupo: qualidade
+  sessao: seguranca
+  name: Squad de Auditoria de Segurança
+  description: Realiza auditoria automatizada de segurança no código-fonte, identifica vulnerabilidades, hardcoded secrets e não conformidades OWASP
+  icon: shield-check
+  version: "1.0.0"
+
+  company: "_expxagents/_memory/company.md"
+  preferences: "_expxagents/_memory/preferences.md"
+  memory: "_memory/memories.md"
+
+  target_audience: Equipe de desenvolvimento
+  platform: Código-fonte
+  format: review
+
+  schedule:
+    enabled: true
+
+  skills:
+    - web_search
+    - code_analyzer
+
+  agents:
+    - id: auditor-lider
+      name: "Carlos Mendes"
+      icon: magnifying-glass
+      avatar: "https://api.dicebear.com/9.x/adventurer/svg?seed=Carlos"
+      prompt: agents/auditor-lider.md
+    - id: analista-seguranca
+      name: "Ana Beatriz"
+      icon: lock
+      avatar: "https://api.dicebear.com/9.x/adventurer/svg?seed=Ana"
+      prompt: agents/analista-seguranca.md
+    - id: relator
+      name: "João Oliveira"
+      icon: clipboard
+      avatar: "https://api.dicebear.com/9.x/adventurer/svg?seed=Joao"
+      prompt: agents/relator.md
+
+  pipeline:
+    steps:
+      - id: step-01
+        agent: auditor-lider
+        label: Escaneamento de código e identificação de vulnerabilidades
+        execution: inline
+      - id: step-02
+        agent: analista-seguranca
+        label: Análise aprofundada e classificação de riscos
+        deliverFrom: auditor-lider
+        execution: inline
+      - id: step-03
+        type: checkpoint
+        label: Revisão dos achados de segurança
+        options:
+          - approve
+          - reject
+        on_reject: step-02
+      - id: step-04
+        agent: relator
+        label: Geração de relatório de segurança com recomendações
+        deliverFrom: analista-seguranca
+        execution: inline
+        produces_format: true
