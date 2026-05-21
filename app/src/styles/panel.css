@@ -1,0 +1,159 @@
+/* ═══════════════════════════════════════
+   AgencyFlow — Task Detail Panel
+   src/styles/panel.css
+═══════════════════════════════════════ */
+
+.panel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 99;
+  display: none;
+  backdrop-filter: blur(1px);
+}
+.panel-overlay.active { display: block; }
+
+.task-panel {
+  position: fixed;
+  top: 0;
+  right: -600px;
+  width: var(--panel-w);
+  height: 100vh;
+  background: var(--bg2);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: right var(--t-slow);
+}
+.task-panel.open { right: 0; }
+
+/* HEADER */
+.panel-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.panel-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel-task-id {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: var(--font-display);
+}
+.panel-close {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-md);
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text2);
+  font-size: 16px;
+  transition: all var(--t-fast);
+}
+.panel-close:hover {
+  background: var(--red-bg);
+  color: var(--red);
+  border-color: var(--red);
+}
+
+/* ASSOC BANNER */
+.assoc-banner {
+  padding: 10px 18px;
+  background: var(--blue-bg);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background var(--t-fast);
+}
+.assoc-banner:hover { background: rgba(59,130,246,.18); }
+
+/* BODY */
+.panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px;
+}
+
+/* SUBTASKS */
+.subtask-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--bg3);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+}
+.subtask-item input[type=checkbox] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--green);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.subtask-text { font-size: 13px; flex: 1; }
+.subtask-del {
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 14px;
+  background: none;
+  border: none;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all var(--t-fast);
+  line-height: 1;
+}
+.subtask-del:hover { color: var(--red); background: var(--red-bg); }
+
+/* TIMER */
+.timer-display {
+  font-size: 24px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--blue);
+}
+
+/* FOOTER */
+.panel-footer {
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  background: var(--bg2);
+}
+
+/* FILE DROP */
+.file-drop {
+  border: 2px dashed var(--border2);
+  border-radius: var(--r-md);
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.file-drop:hover {
+  border-color: var(--blue);
+  background: var(--blue-bg);
+}

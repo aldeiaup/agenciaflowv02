@@ -1,0 +1,87 @@
+/* ═══════════════════════════════════════
+   AgencyFlow — Design Tokens
+   src/styles/variables.css
+═══════════════════════════════════════ */
+
+:root {
+  /* ── Backgrounds ── */
+  --bg:       #0D0D0F;
+  --bg2:      #111114;
+  --bg3:      #1A1A1F;
+  --bg4:      #222228;
+  --bg5:      #2A2A32;
+
+  /* ── Borders ── */
+  --border:   #2E2E38;
+  --border2:  #3A3A46;
+
+  /* ── Text ── */
+  --text:     #E8E8F0;
+  --text2:    #A0A0B4;
+  --text3:    #666680;
+
+  /* ── Brand Colors ── */
+  --blue:          #3B82F6;
+  --blue2:         #2563EB;
+  --blue-bg:       rgba(59, 130, 246, 0.12);
+  --blue-border:   rgba(59, 130, 246, 0.25);
+
+  --green:         #22C55E;
+  --green2:        #16A34A;
+  --green-bg:      rgba(34, 197, 94, 0.12);
+  --green-border:  rgba(34, 197, 94, 0.25);
+
+  --red:           #EF4444;
+  --red2:          #DC2626;
+  --red-bg:        rgba(239, 68, 68, 0.12);
+  --red-border:    rgba(239, 68, 68, 0.25);
+
+  --orange:        #F97316;
+  --orange2:       #EA6304;
+  --orange-bg:     rgba(249, 115, 22, 0.12);
+  --orange-border: rgba(249, 115, 22, 0.25);
+
+  --yellow:        #EAB308;
+  --yellow-bg:     rgba(234, 179, 8, 0.12);
+  --yellow-border: rgba(234, 179, 8, 0.25);
+
+  --purple:        #A855F7;
+  --purple2:       #9333EA;
+  --purple-bg:     rgba(168, 85, 247, 0.12);
+  --purple-border: rgba(168, 85, 247, 0.25);
+
+  --pink:          #EC4899;
+  --pink-bg:       rgba(236, 72, 153, 0.12);
+  --pink-border:   rgba(236, 72, 153, 0.25);
+
+  --cyan:          #06B6D4;
+  --cyan-bg:       rgba(6, 182, 212, 0.12);
+  --cyan-border:   rgba(6, 182, 212, 0.25);
+
+  /* ── Layout ── */
+  --sidebar-w:   220px;
+  --topbar-h:    52px;
+  --panel-w:     580px;
+
+  /* ── Radius ── */
+  --r-sm:  4px;
+  --r-md:  8px;
+  --r-lg:  10px;
+  --r-xl:  12px;
+  --r-2xl: 16px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+
+  /* ── Transitions ── */
+  --t-fast: 0.12s ease;
+  --t-base: 0.18s ease;
+  --t-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Typography ── */
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body:    'Inter', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+}

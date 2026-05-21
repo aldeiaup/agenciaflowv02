@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgencyFlow — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles/variables.css">
+  <link rel="stylesheet" href="src/styles/global.css">
+  <link rel="stylesheet" href="src/styles/sidebar.css">
+  <link rel="stylesheet" href="src/styles/components.css">
+  <link rel="stylesheet" href="src/styles/kanban.css">
+  <link rel="stylesheet" href="src/styles/panel.css">
+  <link rel="stylesheet" href="src/styles/dashboard.css">
+</head>
+<body>
+<div id="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand">Agency<span>Flow</span></div>
+    <nav class="nav">
+      <div class="nav-section">Principal</div>
+      <div class="nav-item active" onclick="nav('dashboard')" data-p="dashboard">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+        Principal
+      </div>
+      <div class="nav-section">Trabalho</div>
+      <div class="nav-item" onclick="nav('kanban')" data-p="kanban">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="4" height="14" rx="1"/><rect x="6" y="1" width="4" height="10" rx="1"/><rect x="11" y="1" width="4" height="12" rx="1"/></svg>
+        Kanban
+      </div>
+      <div class="nav-item" onclick="nav('calendario')" data-p="calendario">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="11" rx="1.5"/><path d="M5 3V1.5M11 3V1.5M1 7h14"/></svg>
+        Calendário
+      </div>
+      <div class="nav-item" onclick="nav('relatorios')" data-p="relatorios">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12l4-4 3 3 4-5 3 2"/><rect x="1" y="1" width="14" height="14" rx="1.5"/></svg>
+        Relatórios
+      </div>
+      <div class="nav-item" onclick="nav('projetos')" data-p="projetos">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M2 8h8M2 12h5"/></svg>
+        Projetos
+      </div>
+      <div class="nav-item" onclick="nav('sprint')" data-p="sprint">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 4v4l3 2"/></svg>
+        Sprint
+      </div>
+      <div class="nav-item" onclick="nav('checklist')" data-p="checklist">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l2 2 4-4M4 9l2 2 4-4"/><rect x="1" y="1" width="14" height="14" rx="2"/></svg>
+        Checklist
+      </div>
+      <div class="nav-section">Gestão</div>
+      <div class="nav-item" onclick="nav('equipe')" data-p="equipe">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><circle cx="6" cy="5" r="3"/><circle cx="12" cy="5" r="2.2"/><path d="M0 13c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M11.5 9c1.5 0 3.5 1.2 3.5 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        Equipe
+      </div>
+      <div class="nav-item" onclick="nav('squads')" data-p="squads">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="8,1 14,5 14,11 8,15 2,11 2,5"/></svg>
+        Squads
+      </div>
+      <div class="nav-item" onclick="nav('clientes')" data-p="clientes">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="5" width="14" height="10" rx="1.5"/><path d="M5 5V4a3 3 0 016 0v1"/></svg>
+        Clientes
+      </div>
+      <div class="nav-item" onclick="nav('okr')" data-p="okr">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><circle cx="8" cy="8" r="3"/><circle cx="8" cy="8" r=".8" fill="currentColor" stroke="none"/></svg>
+        OKR
+      </div>
+      <div class="nav-section">Sistema</div>
+      <div class="nav-item" onclick="nav('timetracking')" data-p="timetracking">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="9" r="6"/><path d="M8 6v3l2 1.5"/><path d="M6 1h4"/></svg>
+        Controle de Horas
+      </div>
+      <div class="nav-item" onclick="nav('fluxo')" data-p="fluxo">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8h3l2-5 3 10 2-5h2"/></svg>
+        Fluxo
+      </div>
+      <div class="nav-item" onclick="nav('historico')" data-p="historico">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 4v4l-3 2"/></svg>
+        Histórico
+      </div>
+      <div class="nav-item" onclick="nav('notificacoes')" data-p="notificacoes">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1a5 5 0 015 5v3l2 2H1l2-2V6a5 5 0 015-5z"/><path d="M6 13a2 2 0 004 0"/></svg>
+        Notificações
+        <span class="nav-badge" id="nb">3</span>
+      </div>
+      <div class="nav-section">Conta</div>
+      <div class="nav-item" onclick="nav('perfil')" data-p="perfil">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="5" r="3.5"/><path d="M1 15c0-3.3 3.1-6 7-6s7 2.7 7 6"/></svg>
+        Meu Perfil
+      </div>
+      <div class="nav-item" onclick="nav('seguranca')" data-p="seguranca">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2L3 4v4c0 3 2.5 5.3 5 6 2.5-.7 5-3 5-6V4z"/></svg>
+        Segurança
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-row" onclick="nav('perfil')">
+        <div class="avatar avatar-md" id="user-av" style="background:var(--blue)">JN</div>
+        <div>
+          <div class="user-name" id="user-name">Juliane Noberto</div>
+          <div class="user-role" id="user-role">Administrador</div>
+        </div>
+        <svg class="user-logout-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 8H2M14 4l-4 4 4 4"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <h2 id="page-title">Principal</h2>
+      <div class="topbar-actions">
+        <button class="btn btn-primary" id="btn-nova-tarefa" onclick="openNewTask()">+ Nova Tarefa</button>
+      </div>
+    </div>
+    <div class="content" id="content">
+      <div style="display:flex;align-items:center;justify-content:center;height:200px;color:var(--text3)">Carregando...</div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL OVERLAY -->
+<div class="panel-overlay" id="panel-overlay" onclick="closePanel()"></div>
+
+<!-- TASK PANEL -->
+<div class="task-panel" id="task-panel">
+  <div class="panel-header">
+    <div class="panel-header-left">
+      <span class="panel-task-id" id="p-id">#37553</span>
+      <span class="badge badge-blue">Tarefa</span>
+      <span class="badge badge-green">Ativo</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:12px;color:var(--text2)" id="p-pct-lbl">75%</span>
+      <div class="panel-close" onclick="closePanel()">✕</div>
+    </div>
+  </div>
+  <div class="assoc-banner">🔗 Associado: <strong id="p-proj">Site Institucional</strong> — <span id="p-client">Frontsys</span></div>
+  <div class="panel-body">
+    <div class="field" style="margin-bottom:16px"><input class="field-input title-input" id="p-title" placeholder="Título da tarefa..."></div>
+    <div class="field-row" style="margin-bottom:16px">
+      <div><div class="field-label">Início Previsto</div><input type="date" class="field-input" id="p-start"></div>
+      <div><div class="field-label">Prazo de Entrega</div><input type="date" class="field-input" id="p-due"></div>
+    </div>
+    <div class="field-row3" style="margin-bottom:16px">
+      <div><div class="field-label">Prioridade</div><select class="field-input field-select" id="p-pri"><option value="baixa">Baixa</option><option value="normal">Normal</option><option value="alta">Alta</option><option value="urgente">Urgente</option></select></div>
+      <div><div class="field-label">Categoria</div><select class="field-input field-select" id="p-cat"><option>Design</option><option>Dev</option><option>Social</option><option>SEO</option><option>Tráfego</option><option>Outros</option></select></div>
+      <div><div class="field-label">Classificação</div><select class="field-input field-select" id="p-cls"><option>Entregável</option><option>Interno</option><option>Outros</option></select></div>
+    </div>
+    <div class="field-row" style="margin-bottom:16px">
+      <div><div class="field-label">Responsável</div><select class="field-input field-select" id="p-resp"></select></div>
+      <div><div class="field-label">Etapa no Kanban</div><select class="field-input field-select" id="p-stage"><option value="todo">A Fazer</option><option value="doing">Em Andamento</option><option value="review">Em Revisão</option><option value="done">Concluído</option></select></div>
+    </div>
+    <div class="field"><div class="field-label">Tags</div><input class="field-input" id="p-tags" placeholder="tag1, tag2, ..."></div>
+    <div class="field"><div class="field-label">Link</div><input class="field-input" id="p-link" placeholder="https://..."></div>
+    <div class="field">
+      <div class="field-label">Progresso — <span id="p-pct">75%</span></div>
+      <input type="range" class="range-inp" id="p-prog" min="0" max="100" value="75" oninput="updProg(this.value)">
+    </div>
+    <div class="field">
+      <div class="field-label">Descrição</div>
+      <div class="rich-toolbar">
+        <button onclick="fmt('bold')"><b>B</b></button><button onclick="fmt('italic')"><i>I</i></button><button onclick="fmt('underline')"><u>U</u></button>
+        <div class="sep"></div>
+        <button onclick="fmt('h2')" style="font-size:11px">H1</button><button onclick="fmt('h3')" style="font-size:11px">H2</button>
+        <div class="sep"></div>
+        <button onclick="fmt('ul')">≡</button><button onclick="fmt('link')">🔗</button>
+      </div>
+      <textarea class="field-input field-textarea" id="p-desc" style="border-radius:0 0 6px 6px" placeholder="Descreva a tarefa..."></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">Subtarefas</div>
+      <div id="subtask-list" style="display:flex;flex-direction:column;gap:6px"></div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <input class="field-input" id="new-sub" placeholder="Nova sub-tarefa..." style="font-size:12px">
+        <button class="btn btn-primary btn-sm" onclick="addSub()">+</button>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">Controle de Horas</div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <span class="timer-display" id="timer-d">00:00:00</span>
+          <button class="btn btn-primary btn-sm" id="timer-btn" onclick="toggleTimer()">▶ Iniciar</button>
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">REGISTROS</div>
+        <div id="timer-logs"></div>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">Histórico de Atividades</div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px" id="panel-hist"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Anexar Arquivos</div>
+      <div class="file-drop">
+        <div style="font-size:20px;margin-bottom:4px">📎</div>
+        <div style="font-size:12px;color:var(--text3)">Arraste ou <span style="color:var(--blue)">clique para selecionar</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <button class="btn btn-danger btn-sm" id="btn-del-task" onclick="deleteTask()">🗑 Excluir</button>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-sm" onclick="dupTask()">⧉ Duplicar</button>
+      <button class="btn btn-primary btn-sm" onclick="saveTask()">✓ Salvar</button>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="src/data/seed.js"></script>
+  <script src="src/utils/helpers.js"></script>
+  <script src="src/utils/security.js"></script>
+  <script src="src/utils/supabase.js"></script>
+  <script src="src/utils/export.js"></script>
+  <script src="src/components/kanban.js"></script>
+  <script src="src/components/taskPanel.js"></script>
+  <script src="src/config.js"></script>
+  <script src="src/utils/pexels.js"></script>
+  <script src="src/components/modules.js"></script>
+
+<script>
+// ── VERIFICA SESSÃO SUPABASE OU LOCAL ──
+let _session = null;
+
+async function checkAuth() {
+  // 1. Tenta Supabase
+  if (typeof supabase !== 'undefined' && !SUPABASE_URL.includes('SEU_PROJECT_ID')) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      const profile = await sbGetProfile(session.user.id).catch(() => null);
+      _session = {
+        userId: session.user.id,
+        name: profile?.name || session.user.email,
+        email: session.user.email,
+        role: profile?.role || 'Membro',
+        initials: profile?.initials || '??',
+        color: profile?.color || 'var(--blue)',
+        agency: profile?.agency || 'AgencyFlow'
+      };
+    }
+  }
+
+  // 2. Fallback Local
+  if (!_session) {
+    _session = getSession();
+  }
+
+  if (!_session) {
+    logAudit('unauthorized_access', { page: 'dashboard' });
+    window.location.href = 'index.html?reason=unauthorized';
+    return;
+  }
+
+  initApp();
+}
+
+// ── Bootstrap ──
+async function initApp() {
+  const S = {
+    ...seedData,
+    page: 'dashboard',
+    user: _session,
+    drag: null,
+    activeTask: null,
+    calYear: 2026, calMonth: 2,
+    filterResp: '', filterPri: '', filterSearch: '',
+    timerOn: false, timerSec: 0, timerInt: null, timerStart: null,
+    view: 'kanban',
+  };
+
+  window.S = S; // Torna global para outros módulos
+
+  // Sincroniza dados com Supabase se configurado
+  await sbSyncAll();
+
+  // Popula dados do usuário na sidebar
+  if (S.user) {
+    document.getElementById('user-name').textContent = S.user.name;
+    document.getElementById('user-role').textContent = S.user.role;
+    const av = document.getElementById('user-av');
+    av.textContent = S.user.initials || S.user.name.slice(0,2).toUpperCase();
+    av.style.background = S.user.color || 'var(--blue)';
+
+    // RBAC: Oculta itens restritos na sidebar para Membros
+    if (S.user.role === 'Membro') {
+      const restricted = ['equipe', 'squads', 'fluxo'];
+      restricted.forEach(p => {
+        const item = document.querySelector(`[data-p="${p}"]`);
+        if (item) item.style.display = 'none';
+      });
+      // Também oculta seções vazias se necessário (simplificado: oculta labels)
+      document.querySelectorAll('.nav-section').forEach(sec => {
+        if (sec.textContent === 'Gestão') sec.style.display = 'none';
+      });
+    }
+  }
+
+  // Inicia o vigia de sessão (auto-logout por expiração local)
+  startSessionWatcher();
+
+  // Background sutil do dashboard via Pexels
+  initDashboardBackground();
+
+  // Renderização inicial
+  nav('dashboard');
+
+  // Inicializa badge de notificações
+  const unread = S.notifications.filter(n => !n.read).length;
+  const nb = document.getElementById('nb');
+  if (nb) { nb.textContent = unread; nb.style.display = unread > 0 ? '' : 'none'; }
+}
+
+async function doLogout() {
+  logAudit('logout', { userId: S.user?.id, name: S.user?.name });
+  
+  if (typeof supabase !== 'undefined' && !SUPABASE_URL.includes('SEU_PROJECT_ID')) {
+    await sbSignOut().catch(() => {});
+  }
+  
+  destroySession();
+  window.location.href = 'index.html';
+}
+
+// Inicia verificação
+checkAuth();
+</script>
+</body>
+</html>

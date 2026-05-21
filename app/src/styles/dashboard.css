@@ -1,0 +1,326 @@
+/* ═══════════════════════════════════════
+   AgencyFlow — Dashboard Styles
+   src/styles/dashboard.css
+   Estilos específicos para dashboard principal,
+   calendário, relatórios e métricas
+═══════════════════════════════════════ */
+
+/* ── DONUT CHART ── */
+.donut-chart {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+.donut-hole {
+  position: absolute;
+  inset: 18px;
+  border-radius: 50%;
+  background: var(--bg2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── PÓDIO ── */
+.podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 0 8px;
+}
+.podium-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 10px 10px;
+  border-radius: var(--r-lg);
+  background: var(--bg3);
+  flex: 1;
+  max-width: 90px;
+  transition: transform var(--t-base);
+}
+.podium-item:hover { transform: translateY(-2px); }
+.podium-first { padding-top: 20px; background: linear-gradient(180deg, rgba(255,215,0,.08), var(--bg3)); }
+.podium-second { padding-top: 14px; background: linear-gradient(180deg, rgba(192,192,192,.08), var(--bg3)); }
+.podium-third { padding-top: 10px; background: linear-gradient(180deg, rgba(205,127,50,.08), var(--bg3)); }
+.podium-medal { font-size: 16px; line-height: 1; }
+
+/* ── RANKING ── */
+.ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;
+  border-radius: var(--r-md);
+  transition: background var(--t-fast);
+  cursor: default;
+}
+.ranking-item:hover { background: var(--bg3); }
+.ranking-pos {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ── HIGHLIGHT CARDS ── */
+.highlight-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg3);
+  border-radius: var(--r-md);
+  border-left: 3px solid var(--blue);
+  transition: background var(--t-fast);
+}
+.highlight-card:hover { background: var(--bg4); }
+.highlight-icon { font-size: 18px; flex-shrink: 0; }
+
+/* ── WEEK CHART ── */
+.week-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 6px;
+  padding: 16px 0 8px;
+  min-height: 140px;
+}
+.week-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+.week-bar {
+  width: 100%;
+  max-width: 28px;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, var(--blue), var(--purple));
+  min-height: 4px;
+  transition: height var(--t-base);
+}
+
+/* ── DASHBOARD GRID ── */
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.dash-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* ── MÉTRICAS DO DASHBOARD ── */
+.dash-metric-value {
+  font-size: 26px;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.dash-metric-sub {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+/* ── CALENDÁRIO ── */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.cal-header {
+  padding: 8px 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cal-day {
+  padding: 8px 0;
+  font-size: 13px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background var(--t-fast);
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+}
+
+.cal-day:hover {
+  background: var(--bg3);
+}
+
+.cal-day.today {
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-border);
+  font-weight: 600;
+  color: var(--blue);
+}
+
+.cal-day.other {
+  color: var(--text3);
+  opacity: 0.4;
+}
+
+.cal-day.inactive {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.cal-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--blue);
+  margin-top: 2px;
+}
+
+/* ── RELATÓRIOS ── */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.report-table th {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.report-table td {
+  padding: 10px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+
+.report-table tr:hover td {
+  background: var(--bg3);
+}
+
+/* ── TIMELINE ── */
+.timeline {
+  position: relative;
+  padding-left: 24px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+  border-radius: 1px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 16px;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--blue);
+  border: 2px solid var(--bg);
+}
+
+/* ── PERFIL ── */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  margin-bottom: 20px;
+}
+
+.profile-info h2 {
+  font-size: 20px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.profile-info p {
+  font-size: 13px;
+  color: var(--text2);
+}
+
+/* ── SEGURANÇA ── */
+.security-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.security-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  padding: 8px 0;
+}
+
+.security-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.security-dot.safe { background: var(--green); }
+.security-dot.warn { background: var(--orange); }
+.security-dot.danger { background: var(--red); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .dash-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-grid-2 { grid-template-columns: 1fr; }
+  .podium { gap: 4px; }
+  .podium-item { padding: 10px 6px; }
+}
+
+@media (max-width: 640px) {
+  .dash-grid { grid-template-columns: 1fr; }
+  .donut-chart { width: 80px; height: 80px; }
+  .donut-hole { inset: 12px; }
+  .podium-item { max-width: 70px; font-size: 11px; }
+  .week-bar { max-width: 18px; }
+}

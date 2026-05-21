@@ -1,0 +1,181 @@
+/* ═══════════════════════════════════════
+   AgencyFlow — Kanban Board
+   src/styles/kanban.css
+═══════════════════════════════════════ */
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.kanban-board {
+  display: flex;
+  gap: 16px;
+  height: calc(100vh - var(--topbar-h) - 100px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 16px;
+  align-items: flex-start;
+}
+
+.kanban-col {
+  min-width: 280px;
+  max-width: 280px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+}
+
+.col-header {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.col-title {
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.col-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.col-count {
+  background: var(--bg4);
+  color: var(--text2);
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.col-cards {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 60px;
+}
+
+/* DRAG */
+.drop-zone {
+  border: 2px dashed transparent;
+  border-radius: var(--r-md);
+  transition: all var(--t-fast);
+  min-height: 60px;
+}
+.drop-zone.over {
+  border-color: var(--blue);
+  background: var(--blue-bg);
+}
+
+/* CARD */
+.card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 12px;
+  cursor: pointer;
+  transition: all var(--t-base);
+  user-select: none;
+}
+.card:hover {
+  border-color: var(--border2);
+  background: var(--bg4);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.card.dragging {
+  opacity: 0.4;
+  border: 1px dashed var(--blue);
+  transform: rotate(1.5deg);
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.card-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+.card-date {
+  font-size: 11px;
+  color: var(--text3);
+}
+.card-date.late { color: var(--red); }
+
+/* ADD BUTTON */
+.add-card-btn {
+  margin: 6px 10px 10px;
+  padding: 8px;
+  border-radius: var(--r-md);
+  border: 1px dashed var(--border);
+  background: transparent;
+  color: var(--text3);
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  transition: all var(--t-fast);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: calc(100% - 20px);
+}
+.add-card-btn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: var(--blue-bg);
+}
+
+/* LIST VIEW */
+.list-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.list-table th {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.list-table td {
+  padding: 10px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.list-table tr:hover td {
+  background: var(--bg3);
+  cursor: pointer;
+}

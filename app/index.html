@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgencyFlow — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles/variables.css">
+  <link rel="stylesheet" href="src/styles/global.css">
+  <link rel="stylesheet" href="src/styles/components.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="src/data/seed.js"></script>
+  <script src="src/utils/helpers.js"></script>
+  <script src="src/utils/security.js"></script>
+  <script src="src/utils/supabase.js"></script>
+  <script src="src/components/auth.js" defer></script>
+  <style>
+    body { overflow: auto; display: block; }
+    .screen { display: none; min-height: 100vh; }
+    .screen.active { display: flex; }
+    .left-panel { width: 44%; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 40px; position: relative; overflow: hidden; }
+    .right-panel { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; background: var(--bg); }
+    .form-card { width: 100%; max-width: 400px; animation: fadeIn .25s ease; }
+    .form-title { font-family: var(--font-display); font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+    .form-sub { font-size: 13px; color: var(--text2); margin-bottom: 28px; }
+    .form-sub a { color: var(--blue); cursor: pointer; }
+    .hero h1 { font-family: var(--font-display); font-size: 34px; font-weight: 800; line-height: 1.15; margin-bottom: 16px; letter-spacing: -1px; text-shadow: 0 2px 20px rgba(0,0,0,0.6); }
+    .hero h1 span { color: var(--blue); text-shadow: 0 2px 20px rgba(0,0,0,0.4); }
+    .hero p { font-size: 14px; color: var(--text2); line-height: 1.7; max-width: 340px; margin-bottom: 32px; text-shadow: 0 1px 12px rgba(0,0,0,0.5); }
+    .hero-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--blue); background: rgba(59, 130, 246, 0.2); border: 1px solid var(--blue-border); padding: 4px 12px; border-radius: 20px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: .5px; backdrop-filter: blur(4px); }
+    .lp-brand { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--blue); margin-bottom: auto; text-shadow: 0 2px 16px rgba(0,0,0,0.5); }
+    .lp-brand span { color: var(--text2); font-weight: 400; text-shadow: 0 2px 16px rgba(0,0,0,0.4); }
+    .features { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+    .feat { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--text2); }
+    .feat-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+    .feat-icon.blue { background: var(--blue-bg); } .feat-icon.green { background: var(--green-bg); } .feat-icon.purple { background: var(--purple-bg); }
+    .testimonial { padding: 16px; background: rgba(26, 26, 31, 0.75); border: 1px solid rgba(46, 46, 56, 0.5); border-radius: var(--r-lg); margin-top: 8px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .test-text { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 10px; font-style: italic; }
+    .stats { display: flex; gap: 24px; margin-top: 24px; }
+    .stat-n { font-family: var(--font-display); font-size: 22px; font-weight: 700; text-shadow: 0 1px 12px rgba(0,0,0,0.5); }
+    .stat-l { font-size: 11px; color: var(--text3); text-shadow: 0 1px 8px rgba(0,0,0,0.4); }
+    .demo-box { background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: var(--r-md); padding: 10px 14px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px; }
+    .demo-box-text { font-size: 12px; color: var(--blue); line-height: 1.5; }
+    .field { margin-bottom: 16px; position: relative; }
+    .field-wrap { position: relative; }
+    .field-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); cursor: pointer; font-size: 16px; user-select: none; }
+    .social-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .social-btn { width: 100%; padding: 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r-md); color: var(--text2); font-size: 13px; font-family: var(--font-body); cursor: pointer; transition: all var(--t-base); display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .social-btn:hover { background: var(--bg4); color: var(--text); }
+    .submit-btn { width: 100%; padding: 12px; background: var(--blue); border: none; border-radius: var(--r-md); color: #fff; font-size: 14px; font-weight: 600; font-family: var(--font-display); cursor: pointer; transition: all var(--t-base); margin-top: 4px; }
+    .submit-btn:hover { background: var(--blue2); transform: translateY(-1px); }
+    .steps { display: flex; align-items: center; margin-bottom: 28px; }
+    .step { display: flex; align-items: center; flex: 1; }
+    .step-circle { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--text3); transition: all .3s; flex-shrink: 0; background: var(--bg3); }
+    .step-circle.active { border-color: var(--blue); color: var(--blue); background: var(--blue-bg); }
+    .step-circle.done { border-color: var(--green); background: var(--green); color: #fff; }
+    .step-line { flex: 1; height: 2px; background: var(--border); margin: 0 6px; transition: background .3s; }
+    .step-line.done { background: var(--green); }
+    .step:last-child .step-line { display: none; }
+    .role-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 6px; }
+    .role-opt { padding: 10px 8px; border: 1px solid var(--border); border-radius: var(--r-md); cursor: pointer; text-align: center; transition: all var(--t-base); background: var(--bg3); }
+    .role-opt.selected { border-color: var(--blue); background: var(--blue-bg); }
+    .role-opt-icon { font-size: 18px; margin-bottom: 4px; }
+    .role-opt-label { font-size: 11px; font-weight: 600; color: var(--text2); }
+    .role-opt.selected .role-opt-label { color: var(--blue); }
+    .pwd-bars { display: flex; gap: 3px; margin-bottom: 4px; }
+    .pwd-bar { height: 3px; flex: 1; border-radius: 2px; background: var(--bg5); transition: background .3s; }
+    .pwd-bar.weak { background: var(--red); } .pwd-bar.medium { background: var(--yellow); } .pwd-bar.strong { background: var(--green); }
+    .avatar-row { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .av-opt { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all var(--t-fast); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; }
+    .av-opt.selected { border-color: #fff; transform: scale(1.1); }
+    .terms-check { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 14px; }
+    .terms-check input { width: 14px; height: 14px; accent-color: var(--blue); margin-top: 2px; flex-shrink: 0; cursor: pointer; }
+    .terms-check label { font-size: 12px; color: var(--text2); line-height: 1.5; }
+    .success-icon { font-size: 52px; margin-bottom: 16px; text-align: center; }
+    .success-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin-bottom: 8px; text-align: center; }
+    .success-sub { font-size: 14px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; text-align: center; }
+    @media (max-width: 768px) { .left-panel { display: none; } .right-panel { padding: 24px; } }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="screen active" id="sc-login">
+  <div class="left-panel">
+    <div class="lp-brand">Agency<span>Flow</span></div>
+    <div class="hero" style="margin:auto 0;padding:20px 0">
+      <div class="hero-tag">✦ Para agências de marketing</div>
+      <h1>Produtividade que <span>realmente</span> funciona</h1>
+      <p>Gerencie tarefas, equipes, clientes e projetos em um único lugar. Do briefing à entrega, tudo sob controle.</p>
+      <div class="features">
+        <div class="feat"><div class="feat-icon blue">📋</div>Kanban com drag and drop e filtros avançados</div>
+        <div class="feat"><div class="feat-icon green">👥</div>Squads, responsáveis e controle de horas</div>
+        <div class="feat"><div class="feat-icon purple">📊</div>Relatórios, OKRs e automações de fluxo</div>
+      </div>
+      <div class="testimonial">
+        <div class="test-text">"Reduziu em 40% o tempo que perdíamos em reuniões de alinhamento. Toda a equipe na mesma página."</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+          <div class="avatar avatar-md" style="background:#A855F7">MX</div>
+          <div><div style="font-size:12px;font-weight:500">Mauricio Xariff</div><div style="font-size:11px;color:var(--text3)">Gerente · Frontsys</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div><div class="stat-n">2.4k+</div><div class="stat-l">Tarefas gerenciadas</div></div>
+      <div><div class="stat-n">98%</div><div class="stat-l">Satisfação</div></div>
+      <div><div class="stat-n">12</div><div class="stat-l">Agências ativas</div></div>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="form-card">
+      <div class="form-title">Bem-vindo de volta 👋</div>
+      <div class="form-sub">Não tem conta? <a onclick="goTo('sc-register')">Criar conta grátis</a></div>
+      <div class="demo-box">
+        <span style="font-size:16px">🔐</span>
+        <div class="demo-box-text"><strong>Acesso demonstração</strong><br>Use qualquer e-mail cadastrado + senha <strong>AgFlow@2026!</strong><br><span style="font-size:10px;opacity:.7">Conta demo usa hash SHA-256 — sem texto plano</span></div>
+      </div>
+      <div class="alert alert-error" id="login-err" style="display:none"><span>⚠</span><span id="login-err-msg"></span></div>
+      <div class="field"><label class="field-label">E-mail</label><div class="field-wrap"><input class="field-input" id="li-email" type="email" placeholder="seu@email.com" value="juliane@agencyflow.com.br" autocomplete="email"></div></div>
+      <div class="field"><label class="field-label">Senha</label><div class="field-wrap"><input class="field-input" id="li-pass" type="password" placeholder="Sua senha" value="AgFlow@2026!" autocomplete="current-password"><span class="field-icon" onclick="togglePwd('li-pass',this)">👁</span></div><div style="text-align:right;margin-top:4px"><a style="font-size:12px;cursor:pointer;color:var(--blue)" onclick="goTo('sc-forgot')">Esqueci minha senha</a></div></div>
+      <div id="attempts-hint" style="display:none;font-size:12px;color:var(--orange);margin-bottom:10px;padding:6px 10px;background:var(--orange-bg);border-radius:var(--r-md);border:1px solid var(--orange-border)"></div>
+      <div class="field" style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <input type="checkbox" id="li-remember" style="accent-color:var(--blue);width:14px;height:14px;cursor:pointer">
+        <label for="li-remember" style="font-size:12px;color:var(--text2);cursor:pointer">Lembrar minha sessão por 7 dias</label>
+      </div>
+      <button class="submit-btn" onclick="doLogin()">Entrar na plataforma</button>
+      <div class="divider">ou continue com</div>
+      <div class="social-row">
+        <button class="social-btn" onclick="doLogin()">🔷 Google</button>
+        <button class="social-btn" onclick="doLogin()">⬛ Microsoft</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div class="screen" id="sc-register">
+  <div class="left-panel">
+    <div class="lp-brand">Agency<span>Flow</span></div>
+    <div class="hero" style="margin:auto 0;padding:20px 0">
+      <div class="hero-tag">✦ Cadastro gratuito</div>
+      <h1>Comece em <span>menos de 2 minutos</span></h1>
+      <p>Crie sua conta, monte sua equipe e comece a gerenciar seus projetos hoje mesmo. Sem cartão de crédito.</p>
+      <div class="features">
+        <div class="feat"><div class="feat-icon blue">🆓</div>14 dias grátis, sem compromisso</div>
+        <div class="feat"><div class="feat-icon green">🔒</div>Dados seguros com criptografia</div>
+        <div class="feat"><div class="feat-icon purple">🚀</div>Onboarding guiado para sua equipe</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div><div class="stat-n">14 dias</div><div class="stat-l">Período grátis</div></div>
+      <div><div class="stat-n">0</div><div class="stat-l">Cartão necessário</div></div>
+      <div><div class="stat-n">5 min</div><div class="stat-l">Para começar</div></div>
+    </div>
+  </div>
+  <div class="right-panel">
+    <div class="form-card" style="max-width:440px">
+      <div class="form-title">Criar sua conta</div>
+      <div class="form-sub">Já tem conta? <a onclick="goTo('sc-login')">Fazer login</a></div>
+      <div class="steps">
+        <div class="step"><div class="step-circle active" id="st1">1</div><div class="step-line" id="sl1"></div></div>
+        <div class="step"><div class="step-circle" id="st2">2</div><div class="step-line" id="sl2"></div></div>
+        <div class="step"><div class="step-circle" id="st3">3</div><div class="step-line"></div></div>
+      </div>
+      <div class="alert alert-error" id="reg-err" style="display:none"><span>⚠</span><span id="reg-err-msg"></span></div>
+      <div id="reg-s1">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:16px">Dados pessoais</div>
+        <div class="field-row"><div class="field"><label class="field-label">Nome</label><input class="field-input" id="rg-fname" placeholder="Seu nome"></div><div class="field"><label class="field-label">Sobrenome</label><input class="field-input" id="rg-lname" placeholder="Sobrenome"></div></div>
+        <div class="field"><label class="field-label">E-mail profissional</label><input class="field-input" id="rg-email" type="email" placeholder="seu@agencia.com.br"></div>
+        <div class="field"><label class="field-label">Telefone (opcional)</label><input class="field-input" id="rg-tel" type="tel" placeholder="(11) 9 0000-0000"></div>
+        <div class="field"><label class="field-label">Perfil na agência</label><div class="role-grid"><div class="role-opt selected" id="ro-admin" onclick="selectRole('admin')"><div class="role-opt-icon">👑</div><div class="role-opt-label">Admin</div></div><div class="role-opt" id="ro-manager" onclick="selectRole('manager')"><div class="role-opt-icon">🧭</div><div class="role-opt-label">Gerente</div></div><div class="role-opt" id="ro-member" onclick="selectRole('member')"><div class="role-opt-icon">🎨</div><div class="role-opt-label">Membro</div></div></div></div>
+        <button class="submit-btn" onclick="nextStep(2)">Continuar →</button>
+      </div>
+      <div id="reg-s2" style="display:none">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:16px">Sua agência</div>
+        <div class="field"><label class="field-label">Nome da agência</label><input class="field-input" id="rg-agency" placeholder="Ex: Studio Creative"></div>
+        <div class="field-row"><div class="field"><label class="field-label">Segmento</label><select class="field-input field-select" id="rg-segment"><option>Marketing Digital</option><option>Social Media</option><option>Performance / Ads</option><option>Branding / Design</option><option>Full Service</option></select></div><div class="field"><label class="field-label">Tamanho</label><select class="field-input field-select" id="rg-size"><option>1–5 pessoas</option><option>6–15 pessoas</option><option>16–30 pessoas</option><option>30+ pessoas</option></select></div></div>
+        <div class="field"><label class="field-label">Senha</label><div class="field-wrap"><input class="field-input" id="rg-pass" type="password" placeholder="Mínimo 8 caracteres" oninput="checkPwd(this.value)"><span class="field-icon" onclick="togglePwd('rg-pass',this)">👁</span></div><div style="margin-top:6px"><div class="pwd-bars"><div class="pwd-bar" id="pb1"></div><div class="pwd-bar" id="pb2"></div><div class="pwd-bar" id="pb3"></div></div><div style="font-size:11px;color:var(--text3)" id="pwd-lbl">Digite uma senha forte</div><div id="pwd-errors" style="margin-top:4px"></div></div></div>
+        <div class="field"><label class="field-label">Confirmar senha</label><div class="field-wrap"><input class="field-input" id="rg-pass2" type="password" placeholder="Repita a senha"><span class="field-icon" onclick="togglePwd('rg-pass2',this)">👁</span></div></div>
+        <div style="display:flex;gap:8px"><button class="submit-btn" style="background:var(--bg4);border:1px solid var(--border);color:var(--text2);flex:0 0 100px" onclick="nextStep(1)">← Voltar</button><button class="submit-btn" onclick="nextStep(3)" style="flex:1">Continuar →</button></div>
+      </div>
+      <div id="reg-s3" style="display:none">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:16px">Personalização</div>
+        <div class="field"><label class="field-label">Cor do perfil</label><div class="avatar-row" id="av-row"><div class="av-opt selected" data-color="#3B82F6" style="background:#3B82F6" onclick="selectAv(this)">A</div><div class="av-opt" data-color="#22C55E" style="background:#22C55E" onclick="selectAv(this)">A</div><div class="av-opt" data-color="#A855F7" style="background:#A855F7" onclick="selectAv(this)">A</div><div class="av-opt" data-color="#F97316" style="background:#F97316" onclick="selectAv(this)">A</div><div class="av-opt" data-color="#EF4444" style="background:#EF4444" onclick="selectAv(this)">A</div><div class="av-opt" data-color="#EC4899" style="background:#EC4899" onclick="selectAv(this)">A</div><div class="av-opt" data-color="#06B6D4" style="background:#06B6D4" onclick="selectAv(this)">A</div><div class="av-opt" data-color="#EAB308" style="background:#EAB308" onclick="selectAv(this)">A</div></div></div>
+        <div class="field"><label class="field-label">Como conheceu o AgencyFlow?</label><select class="field-input field-select"><option>Pesquisa no Google</option><option>Indicação de colega</option><option>Redes sociais</option><option>Evento / Conferência</option><option>Outro</option></select></div>
+        <div class="terms-check"><input type="checkbox" id="terms-cb" checked><label for="terms-cb">Concordo com os <a>Termos de Uso</a> e a <a>Política de Privacidade</a></label></div>
+        <div class="terms-check"><input type="checkbox" id="news-cb" checked><label for="news-cb">Quero receber dicas e novidades por e-mail</label></div>
+        <div style="display:flex;gap:8px"><button class="submit-btn" style="background:var(--bg4);border:1px solid var(--border);color:var(--text2);flex:0 0 100px" onclick="nextStep(2)">← Voltar</button><button class="submit-btn" onclick="doRegister()" style="flex:1">Criar minha conta 🚀</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="screen" id="sc-success">
+  <div class="left-panel"><div class="lp-brand">Agency<span>Flow</span></div><div class="hero" style="margin:auto 0"><div class="hero-tag">✦ Conta criada</div><h1>Tudo pronto para <span>decolar</span></h1><p>Sua conta foi criada com sucesso. Convide sua equipe e comece a gerenciar projetos agora.</p></div></div>
+  <div class="right-panel">
+    <div class="form-card" style="text-align:center">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Conta criada com sucesso!</div>
+      <div class="success-sub">Bem-vindo(a) ao <strong>AgencyFlow</strong>.<br>Verifique seu e-mail para confirmar o cadastro.</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;margin-bottom:24px;text-align:left" id="summary-box"></div>
+      <button class="submit-btn" onclick="window.location.href='dashboard.html'">Acessar a plataforma →</button>
+      <div style="font-size:12px;color:var(--text3);margin-top:12px;cursor:pointer" onclick="goTo('sc-login')">ou voltar ao login</div>
+    </div>
+  </div>
+</div>
+
+<!-- FORGOT -->
+<div class="screen" id="sc-forgot">
+  <div class="left-panel"><div class="lp-brand">Agency<span>Flow</span></div><div class="hero" style="margin:auto 0"><div class="hero-tag">✦ Recuperar acesso</div><h1>Sem problema, <span>acontece!</span></h1><p>Digite seu e-mail e enviaremos um link para redefinir sua senha.</p></div></div>
+  <div class="right-panel">
+    <div class="form-card">
+      <div class="form-title">Esqueceu a senha?</div>
+      <div class="form-sub">Lembrou? <a onclick="goTo('sc-login')">Voltar ao login</a></div>
+      <div class="alert alert-success" id="forgot-ok" style="display:none"><span>✓</span><span>Link enviado! Verifique sua caixa de entrada.</span></div>
+      <div class="field"><label class="field-label">E-mail cadastrado</label><input class="field-input" id="fg-email" type="email" placeholder="seu@email.com"></div>
+      <button class="submit-btn" onclick="doForgot()">Enviar link de recuperação</button>
+      <div style="margin-top:16px;text-align:center"><button class="social-btn" onclick="goTo('sc-login')" style="max-width:200px;margin:0 auto">← Voltar ao login</button></div>
+    </div>
+  </div>
+</div>
+
+  <script src="src/config.js"></script>
+  <script src="src/utils/pexels.js"></script>
+  <script src="src/components/auth.js"></script>
+  <script>
+    // Inicializa background Pexels na página de login
+    document.addEventListener('DOMContentLoaded', () => {
+      initLoginBackground();
+    });
+  </script>
+</body>
+</html>
