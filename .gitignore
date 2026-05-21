@@ -27,7 +27,6 @@ npm-debug.log*
 
 # Config
 app/config.js
-app/src/config.js
 
 # Test output
 app/tests/coverage/
