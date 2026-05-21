@@ -11,12 +11,26 @@ describe('Helpers Module', () => {
     global.COLORS = ['#3B82F6', '#22C55E', '#EF4444', '#F97316', '#A855F7', '#EAB308', '#EC4899', '#06B6D4'];
     global.TODAY = '2026-03-17';
     global.document = {
-      createElement: () => ({
-        style: {},
-        appendChild: () => {},
-        remove: () => {},
-        querySelectorAll: () => [],
-      }),
+      createElement: () => {
+        let _text = '';
+        return {
+          style: {},
+          appendChild: () => {},
+          remove: () => {},
+          querySelectorAll: () => [],
+          set textContent(v) { _text = String(v); },
+          get textContent() { return _text; },
+          get innerHTML() {
+            // Simple HTML entity encoding simulation
+            return _text
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#039;');
+          },
+        };
+      },
       body: {
         appendChild: () => {},
         insertAdjacentHTML: () => {},
